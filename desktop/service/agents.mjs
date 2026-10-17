@@ -21,6 +21,7 @@ export const AGENTS = [
   { id: 'antigravity', label: 'Antigravity', color: '#8ab4f8', command: 'agy', subscription: true },
   { id: 'opencode', label: 'OpenCode', color: '#c8d2dc', command: 'opencode', subscription: false },
   { id: 'kimi', label: 'Kimi', color: '#b3a3f7', command: 'kimi', subscription: true },
+  { id: 'cursor', label: 'Cursor', color: '#f0d58c', command: 'agent', subscription: true },
   { id: 'shell', label: shellLabel(), color: '#89b7ed', command: 'shell', subscription: false },
 ];
 
@@ -127,6 +128,9 @@ export function terminalCommand(agent, { bypass = false, resumeId, nativeId, eff
   } else if (agent === 'kimi') {
     if (resumeId) args.push('--session', resumeId);
     if (bypass) args.push('--yolo');
+  } else if (agent === 'cursor') {
+    // Cursor CLI (`agent`): --resume takes the chat id from `agent ls`; permissions stay the CLI's own.
+    if (resumeId) args.push(`--resume=${resumeId}`);
   } else if (agent === 'opencode') {
     // A private v2 server keeps each tab's observer and native session separate.
     if (opencodeMajor >= 2) args.push('--standalone');

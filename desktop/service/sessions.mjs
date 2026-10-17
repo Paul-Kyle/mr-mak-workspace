@@ -136,7 +136,7 @@ export class Sessions extends EventEmitter {
   }
 
   async importConversation({ agent, nativeId, name, cwd, pinned = false, bypass = false, group = null }) {
-    if (!['codex', 'claude', 'antigravity', 'opencode', 'kimi'].includes(agent) || typeof nativeId !== 'string' || !nativeId.trim()) throw new Error('Choose an agent and its native conversation ID.');
+    if (!['codex', 'claude', 'antigravity', 'opencode', 'kimi', 'cursor'].includes(agent) || typeof nativeId !== 'string' || !nativeId.trim()) throw new Error('Choose an agent and its native conversation ID.');
     nativeId = nativeConversationId(nativeId.trim());
     if (agent === 'antigravity' && !validAntigravityId(nativeId)) throw new Error('Use the Antigravity conversation UUID from its /resume picker.');
     cwd = await workingFolder(cwd || this.repo);
