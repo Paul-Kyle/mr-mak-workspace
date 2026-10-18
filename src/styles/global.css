@@ -1075,7 +1075,8 @@ button:focus-visible {
 
 /* Sidebar tree: category › card › tabs (KMD fork). */
 .sidebar-item-row { display: flex; flex-wrap: wrap; align-items: center; }
-.sidebar-item-row > .sidebar-item { flex: 1 1 auto; min-width: 0; }
+.sidebar-item-row > .sidebar-item { flex: 1 1 0; min-width: 0; }
+.sidebar-item-row > .sidebar-twist, .sidebar-item-row > .entity-status { flex: 0 0 auto; }
 .sidebar-twist {
   background: none; border: 0; cursor: pointer; flex-shrink: 0;
   padding: 2px 5px; font-size: 0.72rem; line-height: 1; color: var(--text-muted);
