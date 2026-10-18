@@ -466,8 +466,16 @@ export async function createService({ repo, uiDir, stateDir, token = secret(), n
     ws.on('close', () => { clearTimeout(authTimer); clients.delete(ws); if (voiceOwner?.clientId === ws.clientId) { voiceOwner = null; broadcast('voice-owner', { owner: null }); } });
     ws.on('error', () => {});
   });
-  let watcher;
-  try { watcher = watch(path.join(repo, 'workspace', 'workspace.json'), () => broadcast('workspace-changed', {})); watcher.on('error', () => {}); } catch { /* Registry may be created after first setup. */ }
+  // Watch the folder, not the file: a single-file watch follows the inode and goes blind once
+  // git or an editor replaces workspace.json by rename. Folder events carry the entry name.
+  let watcher, watchTimer;
+  try {
+    watcher = watch(path.join(repo, 'workspace'), (event, name) => {
+      if (name && name !== 'workspace.json') return;
+      clearTimeout(watchTimer); watchTimer = setTimeout(() => broadcast('workspace-changed', {}), 100);
+    });
+    watcher.on('error', () => {});
+  } catch { /* The workspace folder may be created after first setup. */ }
   const restoreTimer = restoreSessions ? setTimeout(() => sessions.restore().catch(error => sessions.emit('service-error', error)), 100) : null;
   return {
     origin, contentOrigin: files.origin, token, sessions, coordinator, quick, workspace, files, projects, knowledge, integrations, mobile,
@@ -475,7 +483,7 @@ export async function createService({ repo, uiDir, stateDir, token = secret(), n
       nativeMessage: event => nativeSettings.receive(event),
       async close() {
         if (closing) return; closing = true; mcp.close(); nativeSettings.close(); await files.writes.catch(() => {});
-      watcher?.close(); clearTimeout(restoreTimer); coordinator.close(); clearTimeout(settingsTimer); await saveSettings(); await transcriptSave; await quick.saves; await workspace.writes;
+      watcher?.close(); clearTimeout(watchTimer); clearTimeout(restoreTimer); coordinator.close(); clearTimeout(settingsTimer); await saveSettings(); await transcriptSave; await quick.saves; await workspace.writes;
       dictation.close(); await mobile.close();
       for (const ws of wss.clients) ws.terminate();
       wss.close(); await sessions.close();
