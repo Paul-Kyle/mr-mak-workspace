@@ -131,6 +131,7 @@ export default function App() {
         pinned={pinned}
         grouped={grouped}
         activeId={route.id}
+        activeStep={stepIndex}
         query={query}
         onQuery={setQuery}
         searchRef={searchRef}

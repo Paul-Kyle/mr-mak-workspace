@@ -1072,3 +1072,27 @@ button:focus-visible {
   background: var(--green-dim);
   color: var(--green);
 }
+
+/* Sidebar tree: category › card › tabs (KMD fork). */
+.sidebar-item-row { display: flex; flex-wrap: wrap; align-items: center; }
+.sidebar-item-row > .sidebar-item { flex: 1 1 auto; min-width: 0; }
+.sidebar-twist {
+  background: none; border: 0; cursor: pointer; flex-shrink: 0;
+  padding: 2px 5px; font-size: 0.72rem; line-height: 1; color: var(--text-muted);
+}
+.sidebar-twist:hover { color: var(--text); }
+.sidebar-section-toggle {
+  all: unset; cursor: pointer; display: flex; align-items: baseline; gap: 6px;
+}
+.sidebar-section-toggle .sidebar-twist { padding: 0 2px 0 0; }
+.sidebar-steps {
+  flex-basis: 100%; margin: 0 0 4px 22px; padding-left: 8px;
+  border-left: 1px solid var(--surface-3);
+}
+.sidebar-step {
+  display: block; padding: 3px 8px; border-radius: var(--radius);
+  font-size: 0.76rem; color: var(--text-muted); text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-step:hover { color: var(--text); background: var(--surface-2); }
+.sidebar-step.active { color: var(--text-bright); background: var(--surface-2); }
