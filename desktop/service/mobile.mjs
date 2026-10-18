@@ -314,7 +314,7 @@ export class MobileGateway {
       if (!['GET', 'HEAD'].includes(method)) fail('Not allowed', 405);
       if (route === '/mobile/manifest.webmanifest') {
         response.writeHead(200, { 'Content-Type': 'application/manifest+json' });
-        response.end(JSON.stringify({ id: '/mobile/', name: 'Mr. Mak Mobile', short_name: 'Mr. Mak', start_url: '/mobile/', scope: '/mobile/', display: 'standalone', background_color: '#0d0e12', theme_color: '#0d0e12', icons: [{ src: '/assets/mak-mobile-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: '/assets/mak-mobile-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }] })); return;
+        response.end(JSON.stringify({ id: '/mobile/', name: 'Mr. Mak Mobile', short_name: 'Mr. Mak', start_url: '/mobile/', scope: '/mobile/', display: 'standalone', background_color: '#0d0e12', theme_color: '#0d0e12', icons: [{ src: '/assets/mak-dagger-mobile-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: '/assets/mak-dagger-mobile-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }] })); return;
       }
       if (route === '/mobile/sw.js') {
         response.writeHead(200, { 'Content-Type': 'text/javascript', 'Service-Worker-Allowed': '/mobile/' });

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="steel" x1="49" y1="15" x2="81" y2="75" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff7f2"/><stop offset=".5" stop-color="#d8dce5"/><stop offset="1" stop-color="#8e96a9"/>
+    </linearGradient>
+    <linearGradient id="hilt" x1="42" y1="76" x2="81" y2="117" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0a9bd"/><stop offset="1" stop-color="#a75d88"/>
+    </linearGradient>
+    <clipPath id="glitch-a"><path d="M0 35h128v5H0zM0 58h128v4H0zM0 91h128v3H0z"/></clipPath>
+    <clipPath id="glitch-b"><path d="M0 43h128v3H0zM0 65h128v5H0zM0 101h128v3H0z"/></clipPath>
+  </defs>
+  <path d="M64 9 79 57 70 75l-6-3-6 3-9-18L64 9Z" fill="#e95d8d" opacity=".8" transform="translate(-3 0)" clip-path="url(#glitch-a)"/>
+  <path d="M64 9 79 57 70 75l-6-3-6 3-9-18L64 9Z" fill="#69dce5" opacity=".88" transform="translate(3 0)" clip-path="url(#glitch-b)"/>
+  <path d="M64 9 79 57 70 75l-6-3-6 3-9-18L64 9Z" fill="url(#steel)" stroke="#f8dce4" stroke-width="1.3" stroke-linejoin="round"/>
+  <path d="M64 18v48M54 58l10 8 10-8" stroke="#fff" stroke-opacity=".54" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="m39 79 10-5 9 5h12l9-5 10 5-5 8-14-2-1 6H59l-1-6-14 2-5-8ZM59 89h10v18l5 5-2 8H56l-2-8 5-5V89Z" fill="url(#hilt)" stroke="#ffd4db" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M63 91v24M59 112h10" stroke="#67344f" stroke-opacity=".58" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M34 39h18M78 45h16M29 61h17M83 68h14M32 94h19M75 102h19" stroke="#e75c91" stroke-width="2" stroke-linecap="square" opacity=".9"/>
+  <path d="M79 40h14M31 68h15M78 96h18" stroke="#6cdae5" stroke-width="1.7" stroke-linecap="square" opacity=".86"/>
+</svg>

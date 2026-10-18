@@ -297,20 +297,10 @@ fn move_to_trash(path: &str) -> Result<(), trash::Error> {
 }
 
 // macOS menu-bar extras are template images that follow the menu bar's look.
-// The icon's light snout becomes the glyph and its dark nostrils become holes;
-// the 128 px source stays sharp on Retina.
+// Use a dedicated transparent dagger silhouette so badge colors do not enter the mask.
 #[cfg(target_os = "macos")]
 fn menu_bar_icon() -> tauri::Result<tauri::image::Image<'static>> {
-    let icon = tauri::image::Image::from_bytes(include_bytes!("../icons/128x128.png"))?;
-    Ok(tauri::image::Image::new_owned(template_mask(icon.rgba()), icon.width(), icon.height()))
-}
-
-#[cfg(any(target_os = "macos", test))]
-fn template_mask(rgba: &[u8]) -> Vec<u8> {
-    rgba.chunks_exact(4).flat_map(|pixel| {
-        let luma = (299 * pixel[0] as u32 + 587 * pixel[1] as u32 + 114 * pixel[2] as u32) / 1000;
-        [0, 0, 0, if luma >= 80 { pixel[3] } else { 0 }]
-    }).collect()
+    tauri::image::Image::from_bytes(include_bytes!("../icons/menu-128x128.png"))
 }
 
 #[cfg(target_os = "macos")]
@@ -547,23 +537,16 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::{normalize_node_path, template_mask};
+    use super::normalize_node_path;
     use std::path::PathBuf;
-
-    #[test]
-    fn template_mask_keeps_light_shapes_and_cuts_dark_ones() {
-        let pixels = [240, 150, 180, 255, 60, 30, 40, 255, 240, 150, 180, 0];
-        assert_eq!(template_mask(&pixels), vec![0, 0, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0]);
-    }
 
     #[cfg(target_os = "macos")]
     #[test]
-    fn menu_bar_icon_is_a_sharp_mask_with_holes() {
+    fn menu_bar_icon_has_a_transparent_background() {
         let icon = super::menu_bar_icon().unwrap();
         assert_eq!((icon.width(), icon.height()), (128, 128));
         let alpha: Vec<u8> = icon.rgba().chunks_exact(4).map(|pixel| pixel[3]).collect();
-        // Opaque between the nostrils, cut out inside the left nostril.
-        assert_eq!((alpha[64 * 128 + 64], alpha[64 * 128 + 44]), (255, 0));
+        assert_eq!((alpha[40 * 128 + 64], alpha[40 * 128 + 20]), (255, 0));
     }
 
     #[test]

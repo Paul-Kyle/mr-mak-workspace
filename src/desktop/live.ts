@@ -49,7 +49,7 @@ export class LiveVoice {
       this.microphone = microphone
       const peer = new RTCPeerConnection(); this.peer = peer
       peer.ontrack = event => { this.audio.srcObject = new MediaStream([event.track]); this.audio.play().catch(() => this.update({ audible: false })) }
-      peer.onconnectionstatechange = () => { if (generation === this.generation && ['failed', 'closed'].includes(peer.connectionState) && this.state.status !== 'off') this.fail('Voice connection ended. Press the nose to reconnect.') }
+      peer.onconnectionstatechange = () => { if (generation === this.generation && ['failed', 'closed'].includes(peer.connectionState) && this.state.status !== 'off') this.fail('Voice connection ended. Press the voice button to reconnect.') }
       microphone.getAudioTracks().forEach(track => peer.addTrack(track, microphone))
       const channel = peer.createDataChannel('oai-events'); this.channel = channel
       channel.onmessage = ({ data }) => { if (generation === this.generation) { try { this.receive(JSON.parse(data) as LiveEvent, generation) } catch { this.fail('Invalid voice event received.') } } }
@@ -64,7 +64,7 @@ export class LiveVoice {
       const result = await api<{ session: { id: string }; transport: { sdp: string } }>('/live/session', { sdp: peer.localDescription?.sdp, clientId, surface })
       if (generation !== this.generation) { await api('/live/release', { clientId }); return }
       this.sessionId = result.session.id
-      this.startTimer = window.setTimeout(() => this.fail('OpenAI did not start the voice session. Press the nose to try again.'), 25000)
+      this.startTimer = window.setTimeout(() => this.fail('OpenAI did not start the voice session. Press the voice button to try again.'), 25000)
       await peer.setRemoteDescription({ type: 'answer', sdp: result.transport.sdp })
     } catch (error) { if (generation === this.generation) this.fail(error instanceof Error ? error.message : String(error)) }
   }

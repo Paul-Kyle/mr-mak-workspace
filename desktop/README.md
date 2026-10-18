@@ -14,6 +14,12 @@ xterm.js. The windows share sessions and settings but minimize independently.
 | `workspace/_shared/` | Report CSS, image viewer and Help |
 | `.mrmak/` | Local runtime state; ignored by Git |
 
+The editable native icon sources are `desktop/icon.svg`, `desktop/chats-icon.svg`
+and `desktop/menu-bar-icon.svg`. Run `npm run icons:generate` after changing one
+to refresh the native and mobile icon files. The in-app marks are editable SVGs
+in `public/assets/`. The macOS menu-bar source is a transparent template
+silhouette.
+
 `npm run desktop:build` runs `desktop/prepare.mjs`, builds the React frontend,
 packages the service with a Node executable and production dependencies, then
 builds the Tauri executable and platform installers. On Linux, use

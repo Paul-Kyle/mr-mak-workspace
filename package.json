@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "desktop:service": "node desktop/service/main.mjs",
     "desktop:prepare": "node desktop/prepare.mjs",
+    "icons:generate": "node scripts/generate-icons.mjs",
     "desktop:build": "tauri build",
     "desktop:build:appimage": "NO_STRIP=1 tauri build --bundles appimage",
     "desktop:dev": "tauri dev",
