@@ -17,6 +17,7 @@ async function fixture() {
   await mkdir(path.join(repo, 'inbox')); await mkdir(path.join(repo, 'projects'));
   await mkdir(path.join(repo, 'ui'));
   await writeFile(path.join(repo, 'ui', 'index.html'), '<html>Mr. Mak UI</html>');
+  await writeFile(path.join(repo, 'ui', 'app.js'), 'export {};\n');
   await writeFile(path.join(repo, 'workspace', 'workspace.json'), JSON.stringify({ entities: [] }));
   await writeFile(path.join(repo, 'workspace', 'A space', 'report.html'), '<html><img src="image.bin"></html>');
   await writeFile(path.join(repo, 'workspace', 'A space', 'image.bin'), Buffer.from('0123456789'));
@@ -53,6 +54,10 @@ test('local authorization and report isolation protect the terminal service', as
     assert.equal((await request('/bootstrap', undefined, { Origin: service.contentOrigin })).status, 403);
     const ui = await fetch(service.origin);
     assert.equal(ui.headers.get('x-frame-options'), 'DENY');
+    // The window URL carries the token: the document must never be stored by a
+    // browser cache, while the hashed assets it loads keep revalidation.
+    assert.equal(ui.headers.get('cache-control'), 'no-store');
+    assert.equal((await fetch(service.origin + '/app.js')).headers.get('cache-control'), 'no-cache');
     const main = await (await request('/files')).json();
     assert.deepEqual(main.entries.map(item => item.name).sort(), ['inbox', 'projects', 'workspace']);
     const all = await (await request('/files?mode=all')).json();

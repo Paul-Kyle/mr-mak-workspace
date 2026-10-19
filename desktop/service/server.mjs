@@ -425,7 +425,11 @@ export async function createService({ repo, uiDir, stateDir, token = secret(), n
       const relative = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname.slice(1));
       const { file, info } = await realFile(uiDir, relative);
       if (!info.isFile()) throw new Error('File not found');
+      // The window URL carries the bearer token. A document response that may be
+      // stored lands in the webview's disk cache together with that URL, so the
+      // document is never stored; the hashed assets it loads keep revalidation.
       await serveFile(request, response, file, info, {
+        ...(/\.html?$/i.test(relative) ? { 'Cache-Control': 'no-store' } : {}),
         'Referrer-Policy': 'no-referrer', 'X-Frame-Options': 'DENY',
         'Content-Security-Policy': `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: ${files.origin}; media-src 'self' blob: ${files.origin}; connect-src 'self' ws://127.0.0.1:* ${files.origin}; frame-src ${files.origin}; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`,
       });
